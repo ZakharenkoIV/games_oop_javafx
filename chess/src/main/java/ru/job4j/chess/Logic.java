@@ -4,7 +4,6 @@ import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * //TODO add comments.
@@ -27,14 +26,24 @@ public class Logic {
         if (index != -1) {
             Cell[] steps = this.figures[index].way(source, dest);
             for (Figure figure : figures) {
-                for (Cell step : steps) {
-                    if (figure.position().equals(step)) {
-                        result = false;
-                    }
+                if (!checkForValidPath(figure, steps)) {
+                    result = false;
+                    break;
                 }
             }
             if (result) {
                 this.figures[index] = this.figures[index].copy(dest);
+            }
+        }
+        return result;
+    }
+
+    private boolean checkForValidPath(Figure figure, Cell[] steps) {
+        boolean result = true;
+        for (Cell step : steps) {
+            if (figure.position().equals(step)) {
+                result = false;
+                ;
             }
         }
         return result;
