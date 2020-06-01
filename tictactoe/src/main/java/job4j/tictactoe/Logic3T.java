@@ -24,20 +24,42 @@ public class Logic3T {
     }
 
     public boolean isWinnerX() {
-        return this.fillBy(Figure3T::hasMarkX, 0, 0, 1, 0) ||
-                this.fillBy(Figure3T::hasMarkX, 0, 0, 0, 1) ||
-                this.fillBy(Figure3T::hasMarkX, 0,0, 1, 1) ||
-                this.fillBy(Figure3T::hasMarkX, this.table.length - 1 , 0, -1, 1);
+        return isWinner("X");
     }
 
     public boolean isWinnerO() {
-        return this.fillBy(Figure3T::hasMarkO, 0, 0, 1, 0) ||
-                this.fillBy(Figure3T::hasMarkO, 0, 0, 0, 1) ||
-                this.fillBy(Figure3T::hasMarkO, 0,0, 1, 1) ||
-                this.fillBy(Figure3T::hasMarkO, this.table.length - 1, 0, -1, 1);
+        return isWinner("O");
     }
 
+    private boolean isWinner(String winner) {
+        Predicate<Figure3T> hasMark = null;
+        if (winner.equals("X")) {
+            hasMark = Figure3T::hasMarkX;
+        }
+        if (winner.equals("O")) {
+            hasMark = Figure3T::hasMarkO;
+        }
+        return this.fillBy(hasMark, 0, 0, 1, 0) ||
+                this.fillBy(hasMark, 0, 1, 1, 0) ||
+                this.fillBy(hasMark, 0, 2, 1, 0) ||
+                this.fillBy(hasMark, 0, 0, 0, 1) ||
+                this.fillBy(hasMark, 1, 0, 0, 1) ||
+                this.fillBy(hasMark, 2, 0, 0, 1) ||
+                this.fillBy(hasMark, 0, 0, 1, 1) ||
+                this.fillBy(hasMark, this.table.length - 1, 0, -1, 1);
+    }
+
+
     public boolean hasGap() {
-        return true;
+        boolean result = false;
+        for (Figure3T[] figure3TS : this.table) {
+            for (Figure3T figure3T : figure3TS) {
+                if (!figure3T.hasMarkX() && !figure3T.hasMarkO()) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 }
