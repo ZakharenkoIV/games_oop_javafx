@@ -25,29 +25,22 @@ public class Logic3T {
     }
 
     public boolean isWinnerX() {
-        return isWinner("X");
+        return isWinner(Figure3T::hasMarkX);
     }
 
     public boolean isWinnerO() {
-        return isWinner("O");
+        return isWinner(Figure3T::hasMarkO);
     }
 
-    private boolean isWinner(String winner) {
-        Predicate<Figure3T> hasMark = null;
-        if (winner.equals("X")) {
-            hasMark = Figure3T::hasMarkX;
-        }
-        if (winner.equals("O")) {
-            hasMark = Figure3T::hasMarkO;
-        }
-        return this.fillBy(hasMark, 0, 0, 1, 0) ||
-                this.fillBy(hasMark, 0, 1, 1, 0) ||
-                this.fillBy(hasMark, 0, 2, 1, 0) ||
-                this.fillBy(hasMark, 0, 0, 0, 1) ||
-                this.fillBy(hasMark, 1, 0, 0, 1) ||
-                this.fillBy(hasMark, 2, 0, 0, 1) ||
-                this.fillBy(hasMark, 0, 0, 1, 1) ||
-                this.fillBy(hasMark, this.table.length - 1, 0, -1, 1);
+    private boolean isWinner(Predicate<Figure3T> winner) {
+        return this.fillBy(winner, 0, 0, 1, 0) ||
+                this.fillBy(winner, 0, 1, 1, 0) ||
+                this.fillBy(winner, 0, 2, 1, 0) ||
+                this.fillBy(winner, 0, 0, 0, 1) ||
+                this.fillBy(winner, 1, 0, 0, 1) ||
+                this.fillBy(winner, 2, 0, 0, 1) ||
+                this.fillBy(winner, 0, 0, 1, 1) ||
+                this.fillBy(winner, this.table.length - 1, 0, -1, 1);
     }
 
     public boolean hasGap() {
